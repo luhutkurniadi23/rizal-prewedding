@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RIZAL PREWEDDING - 40 Grand Themes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .btn-gradient {
+            background: linear-gradient(90deg, #ff758c 0%, #ff7eb3 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient:disabled { opacity: 0.6; cursor: not-allowed; }
+        .output-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            background: #ffffff;
+            min-height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .watermark {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 800;
+            font-size: 12px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            pointer-events: none;
+            z-index: 10;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #ff758c;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        @media (max-width: 640px) {
+            h1 { font-size: 1.75rem !important; }
+            .glass-card { padding: 1rem !important; }
+        }
+    </style>
+</head>
+<body class="p-3 md:p-8">
+    <div id="main-app" class="max-w-5xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-white drop-shadow-lg mb-1 tracking-tight italic">RIZAL PREWEDDING</h1>
+            <p class="text-pink-100 text-sm md:text-base font-medium opacity-90">Edisi Lengkap: 40 Tema Eksklusif</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Panel Input (Kiri) -->
+            <div class="lg:col-span-5 glass-card p-5 space-y-5">
+                <h2 class="text-lg font-bold text-pink-600 flex items-center gap-2 border-b border-pink-100 pb-2">
+                    <i class="fas fa-sliders-h"></i> Konfigurasi AI
+                </h2>
+                
+                <!-- Upload Foto -->
+                <div class="flex gap-3">
+                    <div id="drop-pria" class="flex-1 border-2 border-dashed border-pink-200 rounded-2xl p-4 text-center cursor-pointer hover:bg-pink-50 transition active:scale-95">
+                        <input type="file" id="file-pria" class="hidden" accept="image/*" capture="user">
+                        <div id="preview-pria" class="hidden">
+                            <img src="" class="h-16 w-16 object-cover rounded-full mx-auto border-2 border-pink-400">
+                            <p class="text-[10px] text-pink-600 font-bold mt-2">PRIA OK</p>
+                        </div>
+                        <div id="text-pria">
+                            <i class="fas fa-mars text-pink-300 text-2xl"></i>
+                            <p class="text-[10px] text-gray-400 font-bold mt-1 uppercase">Foto Pria</p>
+                        </div>
+                    </div>
+                    <div id="drop-wanita" class="flex-1 border-2 border-dashed border-pink-200 rounded-2xl p-4 text-center cursor-pointer hover:bg-pink-50 transition active:scale-95">
+                        <input type="file" id="file-wanita" class="hidden" accept="image/*" capture="user">
+                        <div id="preview-wanita" class="hidden">
+                            <img src="" class="h-16 w-16 object-cover rounded-full mx-auto border-2 border-pink-400">
+                            <p class="text-[10px] text-pink-600 font-bold mt-2">WANITA OK</p>
+                        </div>
+                        <div id="text-wanita">
+                            <i class="fas fa-venus text-pink-300 text-2xl"></i>
+                            <p class="text-[10px] text-gray-400 font-bold mt-1 uppercase">Foto Wanita</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Opsi Hijab & Strict -->
+                <div class="space-y-3">
+                    <div class="bg-white p-3 rounded-2xl border border-pink-100 flex items-center justify-between shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-cloud text-pink-400"></i>
+                            <span class="text-xs font-bold text-gray-700">Gunakan Hijab</span>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="hijab-toggle" class="sr-only peer">
+                            <div class="w-10 h-5 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-pink-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+                        </label>
+                    </div>
+
+                    <div class="bg-white p-3 rounded-2xl border border-pink-100 flex items-center justify-between shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-lock text-pink-400"></i>
+                            <span class="text-xs font-bold text-gray-700">Ultra Strict Face</span>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="strict-face" checked class="sr-only peer">
+                            <div class="w-10 h-5 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-pink-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Pemilihan Tema -->
+                <div class="space-y-3">
+                    <div>
+                        <label class="text-[10px] font-black text-pink-500 uppercase ml-1">Wilayah</label>
+                        <select id="kategori-select" class="w-full bg-white border border-pink-100 rounded-xl p-3 text-sm outline-none shadow-sm">
+                            <option value="lokal">INDONESIA (20 TEMA)</option>
+                            <option value="mancanegara">MANCANEGARA (20 TEMA)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black text-pink-500 uppercase ml-1">Pilih Tema</label>
+                        <select id="template-select" class="w-full bg-white border border-pink-100 rounded-xl p-3 text-sm outline-none shadow-sm"></select>
+                    </div>
+                </div>
+
+                <button id="generate-btn" class="w-full btn-gradient text-white font-black py-4 rounded-2xl shadow-lg flex items-center justify-center gap-3 tracking-widest uppercase text-sm">
+                    <i class="fas fa-wand-magic-sparkles"></i> GENERATE FOTO
+                </button>
+            </div>
+
+            <!-- Panel Hasil (Kanan) -->
+            <div class="lg:col-span-7 glass-card p-5 flex flex-col">
+                <div id="placeholder-result" class="flex-1 flex flex-col items-center justify-center py-20">
+                    <div class="w-20 h-20 bg-pink-50 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-images text-pink-200 text-3xl"></i>
+                    </div>
+                    <p class="text-gray-400 text-sm font-bold uppercase tracking-widest text-center">Menunggu Konfigurasi...</p>
+                </div>
+
+                <div id="loading-result" class="hidden flex-1 flex flex-col items-center justify-center py-20">
+                    <div class="loader mb-6"></div>
+                    <p class="text-pink-600 font-black text-sm tracking-[0.2em] animate-pulse">MEMPROSES KARYA SENI...</p>
+                </div>
+
+                <div id="display-result" class="hidden flex-1">
+                    <div class="output-container shadow-2xl border-4 border-white">
+                        <img id="result-image" src="" alt="Result" class="w-full h-auto max-h-[70vh] object-contain">
+                        <div class="watermark">RIZAL PREWEDDING AI</div>
+                        <div class="absolute top-4 right-4 flex gap-2">
+                            <button onclick="previewImage()" class="bg-black/50 text-white w-10 h-10 rounded-full backdrop-blur-md"><i class="fas fa-expand"></i></button>
+                            <button onclick="downloadImage()" class="bg-pink-500 text-white w-10 h-10 rounded-full shadow-lg"><i class="fas fa-download"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Fullscreen -->
+    <div id="image-modal" class="fixed inset-0 bg-black/95 z-50 hidden flex items-center justify-center p-2" onclick="closeModal()">
+        <img id="modal-img" src="" class="max-w-full max-h-full object-contain shadow-2xl">
+    </div>
+
+    <script>
+        // MASUKKAN API KEY ANDA DI SINI
+        const apiKey = "AIzaSyCawWWu4n8xAMF4uMuny44m_rGKPwdNK94"; 
+
+        const promptsLokal = [
+            { name: "Jawa: Solo Basahan", prompt: "Indonesian wedding, Solo Basahan style. Groom shirtless with dodot and blangkon, bride with dodot and ornate hair accessories. Background: Heritage wooden Joglo house." },
+            { name: "Jawa: Yogyakarta Paes Ageng", prompt: "Indonesian couple in Yogyakarta Paes Ageng. Black velvet with gold, heavy traditional makeup, jasmine flowers. Background: Keraton Yogyakarta courtyard." },
+            { name: "Sunda: Siger Putih", prompt: "Sundanese white wedding. Bride with silver Siger crown and jasmine, groom in white beskap. Background: Colonial garden in Bandung." },
+            { name: "Minang: Koto Gadang", prompt: "Minangkabau traditional Koto Gadang. Bride with velvet headpiece, groom with matching songket suit. Background: Ornate Rumah Gadang interiors." },
+            { name: "Bali: Agung Luxury", prompt: "Balinese Payas Agung. Golden crowns for both, high-end songket fabrics. Background: Pura Besakih at sunrise." },
+            { name: "Bugis: Baju Bodo", prompt: "South Sulawesi wedding. Bride in silk Baju Bodo, groom in Jas Tutu with Songkok Recca. Background: Traditional Bugis stilt house." },
+            { name: "Aceh: Meukasah", prompt: "Acehnese royal wedding. Groom in black and gold Meukasah, bride in red embroidery. Background: Baiturrahman Mosque style." },
+            { name: "Batak: Karo Ulos", prompt: "Batak Karo wedding attire. Using traditional Ulos fabrics and unique red headpieces. Background: Lake Toba pine forest." },
+            { name: "Betawi: Dandanan Care", prompt: "Betawi wedding with Chinese-Arab influence. Bride with veiled crown, groom in gold embroidery. Background: Kota Tua Jakarta." },
+            { name: "Palembang: Aesan Gede", prompt: "Palembang Aesan Gede. Heavy gold jewelry for both, red and gold songket. Background: Ampera Bridge sunset." },
+            { name: "Lampung: Siger Gold", prompt: "Lampung wedding. Bride wearing grand gold Siger crown. Background: Traditional Lampung wooden house." },
+            { name: "Dayak: Kalimantan Heritage", prompt: "Dayak traditional wedding. Using hornbill feathers and beadwork attire. Background: Lush Borneo jungle morning." },
+            { name: "Papua: Modern Ethnic", prompt: "Papuan modern ethnic wedding. Bird of paradise inspired headpieces with modern silk blend. Background: Raja Ampat beach." },
+            { name: "Toraja: Passura", prompt: "Toraja wedding. Groom and bride in white and gold Toraja embroidery. Background: Tongkonan houses in the mist." },
+            { name: "Banjar: Baamar Galung", prompt: "Banjar South Kalimantan wedding. Ornate flower crowns and green velvet. Background: Floating market sunrise." },
+            { name: "Nusa Tenggara: Sumba Ikat", prompt: "Sumba traditional wedding using heavy handwoven Ikat fabrics. Background: Savanna hills of Sumba." },
+            { name: "Madura: Keratonan", prompt: "Madurese wedding attire. Elegant red and black theme with gold jewelry. Background: Sumenep palace." },
+            { name: "Manado: Minahasa", prompt: "Minahasa North Sulawesi wedding. Groom in suit, bride in elegant modern kebaya mix. Background: Bunaken beach luxury." },
+            { name: "Maluku: Baju Cele", prompt: "Moluccan traditional Baju Cele in red and white stripes with lace. Background: Old Portuguese fort in Ambon." },
+            { name: "Modern: Jakarta Rooftop", prompt: "Modern Indonesian couple in white gown and tux. Background: SCBD Jakarta skyscrapers at night." }
+        ];
+
+        const promptsGlobal = [
+            { name: "Jepang: Tokyo Winter", prompt: "Couple in traditional Kimono under cherry blossoms and light snow. Background: Mount Fuji." },
+            { name: "Korea: Royal Hanbok", prompt: "Luxury pastel Hanbok in Gyeongbokgung Palace courtyard." },
+            { name: "Prancis: Paris Sunset", prompt: "European luxury wedding. Background: Eiffel Tower at sunset with golden hour light." },
+            { name: "Inggris: London Royal", prompt: "Royal British wedding style. Background: Westminster Abbey and Big Ben." },
+            { name: "Italia: Venice Canal", prompt: "Couple on a Gondola in Venice, wearing Italian formal couture. Background: Grand Canal." },
+            { name: "Turki: Cappadocia", prompt: "Bohemian luxury wedding. Background: Hot air balloons over Cappadocia valleys." },
+            { name: "Swiss: Alps Meadow", prompt: "Modern wedding attire. Background: Swiss Alps snow mountains and green meadows." },
+            { name: "Yunani: Santorini", prompt: "All white wedding. Background: Blue domes and white buildings of Santorini island." },
+            { name: "Cina: Imperial Red", prompt: "Traditional Chinese Hanfu wedding. Background: The Forbidden City." },
+            { name: "India: Bollywood Grand", prompt: "Luxury Saree and Sherwani. Background: Taj Mahal at dawn." },
+            { name: "AS: NYC Times Square", prompt: "Street-style modern wedding. Background: Times Square neon lights at night." },
+            { name: "Islandia: Waterfall", prompt: "Adventure prewedding. Background: Skogafoss waterfall with dramatic black sand." },
+            { name: "Mesir: Pyramids", prompt: "Egyptian themed luxury wedding. Background: Great Pyramids of Giza." },
+            { name: "Thailand: Wat Arun", prompt: "Traditional Thai Chakkri wedding. Background: Wat Arun temple at night." },
+            { name: "Belanda: Tulip Garden", prompt: "Couple in modern attire. Background: Keukenhof tulip fields in full bloom." },
+            { name: "Arab: Dubai Desert", prompt: "Middle Eastern luxury. Background: Sahara desert dunes with luxury tent." },
+            { name: "Meksiko: Tulum Beach", prompt: "Boho beach wedding. Background: Ancient Mayan ruins by the ocean." },
+            { name: "Skotlandia: Highlands", prompt: "Moody prewedding. Background: Old Scottish castle and misty lochs." },
+            { name: "Australia: Sydney Opera", prompt: "Modern chic wedding. Background: Sydney Opera House and Harbour Bridge." },
+            { name: "Maroko: Marrakech", prompt: "Exotic Riad wedding. Background: Intricate Moroccan tiles and courtyard." }
+        ];
+
+        let imgPriaBase = null, imgWanitaBase = null;
+        const katSelect = document.getElementById('kategori-select');
+        const tempSelect = document.getElementById('template-select');
+        const hijabToggle = document.getElementById('hijab-toggle');
+        const genBtn = document.getElementById('generate-btn');
+
+        function updateTemplates() {
+            tempSelect.innerHTML = '';
+            const list = katSelect.value === 'lokal' ? promptsLokal : promptsGlobal;
+            list.forEach((t, i) => {
+                const opt = document.createElement('option');
+                opt.value = i; opt.textContent = t.name;
+                tempSelect.appendChild(opt);
+            });
+        }
+
+        katSelect.onchange = updateTemplates;
+        updateTemplates();
+
+        function setup(id, target) {
+            const drop = document.getElementById(`drop-${id}`);
+            const inp = document.getElementById(`file-${id}`);
+            if(!drop || !inp) return;
+            drop.onclick = () => inp.click();
+            inp.onchange = (e) => {
+                const f = e.target.files[0]; if (!f) return;
+                const r = new FileReader();
+                r.onload = (ev) => {
+                    const b = ev.target.result.split(',')[1];
+                    if (target === 'pria') imgPriaBase = b; else imgWanitaBase = b;
+                    const preview = document.getElementById(`preview-${id}`);
+                    const text = document.getElementById(`text-${id}`);
+                    if(preview) {
+                        preview.querySelector('img').src = ev.target.result;
+                        preview.classList.remove('hidden');
+                    }
+                    if(text) text.classList.add('hidden');
+                };
+                r.readAsDataURL(f);
+            };
+        }
+        setup('pria', 'pria'); setup('wanita', 'wanita');
+
+        genBtn.onclick = async () => {
+            if (!imgPriaBase || !imgWanitaBase) {
+                alert("Silakan pilih foto Pria dan Wanita terlebih dahulu!");
+                return;
+            }
+
+            const list = katSelect.value === 'lokal' ? promptsLokal : promptsGlobal;
+            const theme = list[tempSelect.value];
+            const useHijab = hijabToggle.checked;
+            const isStrict = document.getElementById('strict-face').checked;
+
+            const hijabInst = useHijab ? 
+                "The bride must wear an elegant matching hijab covering her hair and neck." : 
+                "The bride has beautifully styled traditional hair.";
+
+            const sys = `[STRICT IDENTITY LOCK] 
+                Ref1=Male Groom, Ref2=Female Bride. 
+                Keep faces identical to references.
+                ${isStrict ? "Preserve original facial features strictly." : ""}
+                ${hijabInst}`;
+
+            const promptText = `Professional prewedding photo. Couple together. Theme: ${theme.prompt}. Cinematic lighting, 8k.`;
+
+            document.getElementById('placeholder-result').classList.add('hidden');
+            document.getElementById('display-result').classList.add('hidden');
+            document.getElementById('loading-result').classList.remove('hidden');
+            genBtn.disabled = true;
+
+            try {
+                const fetchWithRetry = async (url, options, retries = 5, delay = 1000) => {
+                    for (let i = 0; i < retries; i++) {
+                        try {
+                            const res = await fetch(url, options);
+                            if (res.ok) return res;
+                        } catch (err) {
+                            if (i === retries - 1) throw err;
+                        }
+                        await new Promise(r => setTimeout(r, delay));
+                        delay *= 2;
+                    }
+                };
+
+                const res = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [
+                                { text: sys + " " + promptText },
+                                { inlineData: { mimeType: "image/png", data: imgPriaBase } },
+                                { inlineData: { mimeType: "image/png", data: imgWanitaBase } }
+                            ]
+                        }],
+                        generationConfig: { responseModalities: ['TEXT', 'IMAGE'] }
+                    })
+                });
+
+                const d = await res.json();
+                const out = d.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
+
+                if (out) {
+                    document.getElementById('result-image').src = `data:image/png;base64,${out}`;
+                    document.getElementById('display-result').classList.remove('hidden');
+                } else {
+                    alert("Gagal menghasilkan gambar. Silakan coba lagi.");
+                }
+            } catch (e) {
+                alert("Maaf, terjadi kesalahan koneksi atau API.");
+            } finally {
+                document.getElementById('loading-result').classList.add('hidden');
+                genBtn.disabled = false;
+            }
+        };
+
+        function previewImage() {
+            const resImg = document.getElementById('result-image');
+            const modalImg = document.getElementById('modal-img');
+            const modal = document.getElementById('image-modal');
+            if(resImg && modalImg && modal) {
+                modalImg.src = resImg.src;
+                modal.classList.remove('hidden');
+            }
+        }
+        function closeModal() { document.getElementById('image-modal').classList.add('hidden'); }
+        function downloadImage() {
+            const resImg = document.getElementById('result-image');
+            if(!resImg) return;
+            const a = document.createElement('a');
+            a.href = resImg.src;
+            a.download = `Prewed_Rizal_${Date.now()}.png`;
+            a.click();
+        }
+    </script>
+</body>
+</html>
