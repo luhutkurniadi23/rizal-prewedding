@@ -70,7 +70,6 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <!-- Panel Input (Kiri) -->
             <div class="lg:col-span-5 glass-card p-5 space-y-5">
                 <h2 class="text-lg font-bold text-pink-600 flex items-center gap-2 border-b border-pink-100 pb-2">
                     <i class="fas fa-sliders-h"></i> Konfigurasi AI
@@ -102,7 +101,6 @@
                     </div>
                 </div>
 
-                <!-- Opsi Hijab & Strict -->
                 <div class="space-y-3">
                     <div class="bg-white p-3 rounded-2xl border border-pink-100 flex items-center justify-between shadow-sm">
                         <div class="flex items-center gap-3">
@@ -127,7 +125,6 @@
                     </div>
                 </div>
 
-                <!-- Pemilihan Tema -->
                 <div class="space-y-3">
                     <div>
                         <label class="text-[10px] font-black text-pink-500 uppercase ml-1">Wilayah</label>
@@ -147,7 +144,6 @@
                 </button>
             </div>
 
-            <!-- Panel Hasil (Kanan) -->
             <div class="lg:col-span-7 glass-card p-5 flex flex-col">
                 <div id="placeholder-result" class="flex-1 flex flex-col items-center justify-center py-20">
                     <div class="w-20 h-20 bg-pink-50 rounded-full flex items-center justify-center mb-4">
@@ -175,14 +171,13 @@
         </div>
     </div>
 
-    <!-- Modal Fullscreen -->
     <div id="image-modal" class="fixed inset-0 bg-black/95 z-50 hidden flex items-center justify-center p-2" onclick="closeModal()">
         <img id="modal-img" src="" class="max-w-full max-h-full object-contain shadow-2xl">
     </div>
 
     <script>
         // MASUKKAN API KEY ANDA DI SINI
-        const apiKey = "AIzaSyCawWWu4n8xAMF4uMuny44m_rGKPwdNK94"; 
+        const apiKey = ""; 
 
         const promptsLokal = [
             { name: "Jawa: Solo Basahan", prompt: "Indonesian wedding, Solo Basahan style. Groom shirtless with dodot and blangkon, bride with dodot and ornate hair accessories. Background: Heritage wooden Joglo house." },
@@ -267,6 +262,7 @@
                         preview.classList.remove('hidden');
                     }
                     if(text) text.classList.add('hidden');
+                    console.log(`Foto ${target} berhasil dimuat.`);
                 };
                 r.readAsDataURL(f);
             };
@@ -274,27 +270,30 @@
         setup('pria', 'pria'); setup('wanita', 'wanita');
 
         genBtn.onclick = async () => {
+            console.log("Tombol Generate ditekan...");
+
+            // Cek API Key
+            if (!apiKey || apiKey.trim() === "") {
+                console.error("API Key kosong!");
+                alert("API Key belum diisi! Silakan masukkan API Key Anda di dalam kode.");
+                return;
+            }
+
             if (!imgPriaBase || !imgWanitaBase) {
+                console.warn("Foto belum lengkap.");
                 alert("Silakan pilih foto Pria dan Wanita terlebih dahulu!");
                 return;
             }
 
+            console.log("Konfigurasi valid, memulai request ke Gemini...");
+            
             const list = katSelect.value === 'lokal' ? promptsLokal : promptsGlobal;
             const theme = list[tempSelect.value];
             const useHijab = hijabToggle.checked;
             const isStrict = document.getElementById('strict-face').checked;
 
-            const hijabInst = useHijab ? 
-                "The bride must wear an elegant matching hijab covering her hair and neck." : 
-                "The bride has beautifully styled traditional hair.";
-
-            const sys = `[STRICT IDENTITY LOCK] 
-                Ref1=Male Groom, Ref2=Female Bride. 
-                Keep faces identical to references.
-                ${isStrict ? "Preserve original facial features strictly." : ""}
-                ${hijabInst}`;
-
-            const promptText = `Professional prewedding photo. Couple together. Theme: ${theme.prompt}. Cinematic lighting, 8k.`;
+            const sys = `[STRICT IDENTITY LOCK] Keep faces identical to references. ${useHijab ? "Bride wears hijab." : ""}`;
+            const promptText = `Theme: ${theme.prompt}. 8k resolution.`;
 
             document.getElementById('placeholder-result').classList.add('hidden');
             document.getElementById('display-result').classList.add('hidden');
@@ -302,20 +301,11 @@
             genBtn.disabled = true;
 
             try {
-                const fetchWithRetry = async (url, options, retries = 5, delay = 1000) => {
-                    for (let i = 0; i < retries; i++) {
-                        try {
-                            const res = await fetch(url, options);
-                            if (res.ok) return res;
-                        } catch (err) {
-                            if (i === retries - 1) throw err;
-                        }
-                        await new Promise(r => setTimeout(r, delay));
-                        delay *= 2;
-                    }
-                };
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${apiKey}`;
+                
+                console.log("Mengirim request ke:", url.split('?')[0] + "?key=HIDDEN");
 
-                const res = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${apiKey}`, {
+                const response = await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -330,20 +320,34 @@
                     })
                 });
 
-                const d = await res.json();
-                const out = d.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
+                console.log("Status Respon:", response.status);
+
+                if (!response.ok) {
+                    const errText = await response.text();
+                    console.error("Detail Error Server:", errText);
+                    throw new Error(`Server Error (${response.status}): ${errText}`);
+                }
+
+                const data = await response.json();
+                console.log("Data diterima dari Gemini.");
+
+                const out = data.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
 
                 if (out) {
+                    console.log("Gambar berhasil diproses, menampilkan hasil.");
                     document.getElementById('result-image').src = `data:image/png;base64,${out}`;
                     document.getElementById('display-result').classList.remove('hidden');
                 } else {
-                    alert("Gagal menghasilkan gambar. Silakan coba lagi.");
+                    console.error("Respon JSON tidak berisi data gambar:", data);
+                    alert("AI tidak mengembalikan gambar. Periksa Console.");
                 }
             } catch (e) {
-                alert("Maaf, terjadi kesalahan koneksi atau API.");
+                console.error("Catch Error:", e.message);
+                alert("Error: " + e.message);
             } finally {
                 document.getElementById('loading-result').classList.add('hidden');
                 genBtn.disabled = false;
+                console.log("Proses selesai.");
             }
         };
 
