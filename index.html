@@ -132,7 +132,7 @@
                 </div>
                 <div id="loading-result" class="hidden flex-1 flex flex-col items-center justify-center py-20">
                     <div class="loader mb-6"></div>
-                    <p class="text-pink-600 font-black text-sm tracking-[0.2em] animate-pulse">SEDANG MELUKIS...</p>
+                    <p class="text-pink-600 font-black text-sm tracking-[0.2em] animate-pulse text-center px-4">SEDANG MELUKIS...<br><span class="text-[10px] text-gray-400 mt-2 font-normal">Mohon tunggu sebentar</span></p>
                 </div>
                 <div id="display-result" class="hidden flex-1">
                     <div class="output-container shadow-2xl border-4 border-white">
@@ -148,7 +148,6 @@
     </div>
 
     <script>
-        // Data Prompts - Pastikan deskripsi lengkap tetap ada
         const promptsLokal = [
             { name: "Jawa: Solo Basahan", prompt: "Indonesian wedding, Solo Basahan style. Groom shirtless with dodot and blangkon, bride with dodot and ornate hair accessories." },
             { name: "Bali: Agung Luxury", prompt: "Balinese Payas Agung. Golden crowns for both, high-end songket fabrics." },
@@ -168,7 +167,6 @@
         const genBtn = document.getElementById('generate-btn');
         const userApiInput = document.getElementById('user-api-key');
 
-        // Memuat API Key yang tersimpan dari LocalStorage jika ada
         if(localStorage.getItem('rizal_api_key')) {
             userApiInput.value = localStorage.getItem('rizal_api_key');
         }
@@ -208,7 +206,6 @@
             if (!currentApiKey) { alert("Silakan masukkan secret ID (API Key) Anda!"); return; }
             if (!imgPriaBase || !imgWanitaBase) { alert("Foto pria dan wanita belum lengkap!"); return; }
 
-            // Simpan API Key ke browser agar tidak perlu input ulang saat refresh
             localStorage.setItem('rizal_api_key', currentApiKey);
             
             document.getElementById('placeholder-result').classList.add('hidden');
@@ -237,11 +234,15 @@
                 });
 
                 const data = await response.json();
+                
                 if(data.error) {
-                    if(data.error.message.includes("API key")) {
-                        throw new Error("Secret ID salah atau sudah diblokir. Silakan gunakan kunci baru.");
+                    const errMsg = data.error.message;
+                    if(errMsg.includes("quota")) {
+                        throw new Error("Kuota API Habis! Akun gratis Google memiliki batas limit. Silakan tunggu 1-5 menit atau gunakan API Key (secret ID) lain.");
+                    } else if(errMsg.includes("API key")) {
+                        throw new Error("Secret ID salah atau sudah diblokir. Silakan buat kunci baru di Google AI Studio.");
                     }
-                    throw new Error(data.error.message);
+                    throw new Error(errMsg);
                 }
 
                 const out = data.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
@@ -249,10 +250,10 @@
                     document.getElementById('result-image').src = `data:image/png;base64,${out}`;
                     document.getElementById('display-result').classList.remove('hidden');
                 } else {
-                    alert("AI gagal memproses gambar. Pastikan foto wajah terlihat jelas.");
+                    alert("AI gagal memproses gambar. Pastikan foto wajah terlihat jelas dan tidak buram.");
                 }
             } catch (e) {
-                alert("Error: " + e.message);
+                alert(e.message);
             } finally {
                 document.getElementById('loading-result').classList.add('hidden');
                 genBtn.disabled = false;
